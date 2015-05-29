@@ -1,0 +1,6 @@
+*.user
+*.suo
+_ReSharper.*
+*.cache
+/GeoHashCalc/bin
+/GeoHashCalc/obj
