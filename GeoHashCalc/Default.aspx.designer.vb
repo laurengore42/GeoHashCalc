@@ -12,13 +12,4 @@ Option Explicit On
 
 
 Partial Public Class _Default
-
-    '''<summary>
-    '''map control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents map As Global.GeoHashCalc.map
 End Class
