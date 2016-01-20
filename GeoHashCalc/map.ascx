@@ -4,9 +4,9 @@
 
     function locateSuccess(position) {
         var whereLat = position.coords.latitude
-        var whereLong = position.coords.longitude
+        var whereLon = position.coords.longitude
 
-        location.replace(location.origin + "?lat=" + whereLat + "&long=" + whereLong)
+        location.replace(location.origin + "?lat=" + whereLat + "&lon=" + whereLon)
     }
 
     function locateFail() {
@@ -22,7 +22,7 @@
                 }
             })
         
-            if (queries["lat"] == undefined || queries["long"] == undefined) {
+            if (queries["lat"] == undefined || queries["lon"] == undefined) {
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(locateSuccess, locateFail,
                     {
@@ -33,7 +33,7 @@
                 }
             } else {
                 document.getElementById("mapframe").src = "https://www.google.com/maps/embed/v1/place?q=" +
-                    queries["lat"] + ", " + queries["long"] + "&key=AIzaSyD7THYGsLn7mmpoQ5GlI2lfU0-tZ8Tjqz8"
+                    queries["lat"] + ", " + queries["lon"] + "&key=AIzaSyD7THYGsLn7mmpoQ5GlI2lfU0-tZ8Tjqz8"
             }
     })
 
