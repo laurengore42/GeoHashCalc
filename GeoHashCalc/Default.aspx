@@ -10,11 +10,27 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <script runat="server">
-        Public Function GetDowValue(ByVal year As String, ByVal month As String, ByVal day As String) As String
+        Private Function GetDowValue(ByVal thisDate As DateTime) As String
+            Dim sReturn = IsAmericaAwakeYet(thisDate)
+            If sReturn = Nothing Then
+                sReturn = IsAmericaAwakeYet(thisDate.Subtract(New TimeSpan(1, 0, 0, 0)))
+            End If
+            Return sReturn
+        End Function
+        
+        Private Function IsAmericaAwakeYet(ByVal thisDate As DateTime) As String
+            Dim year = thisDate.Year.ToString
+            Dim month = thisDate.Month.ToString
+            Dim day = thisDate.Day.ToString
             Dim sURL As String
             sURL = "http://geo.crox.net/djia/" + year + "/" + month + "/" + day
             Dim wrGETURL As WebRequest = WebRequest.Create(sURL)
-            Dim objStream As Stream = wrGETURL.GetResponse.GetResponseStream()
+            Dim objStream As Stream
+            Try
+                objStream = wrGETURL.GetResponse.GetResponseStream()
+            Catch ex As Exception
+                Return Nothing
+            End Try
             Dim objReader As New StreamReader(objStream)
             Dim sReturn As String = ""
             sReturn += objReader.ReadLine
@@ -39,12 +55,9 @@
 
             <p><i>
                     <%
-                        Dim yesterday As Date = DateTime.Now.Subtract(New TimeSpan(1, 0, 0, 0))
-                        Dim today As Date = DateTime.Now
-
-                        Dim todayStartString = GetDowValue(today.Year, today.Month, today.Day)
-                    
-                        Dim yesterdayStartString = GetDowValue(yesterday.Year, yesterday.Month, yesterday.Day)
+                        Dim todayStartString = GetDowValue(DateTime.Now)
+                        Dim yesterdayStartString = GetDowValue(DateTime.Now.Subtract(New TimeSpan(1, 0, 0, 0)))
+                        
                         Dim yesterdayFullHash = GenerateHash(yesterdayStartString)
                         Dim yesterdayHash1 = yesterdayFullHash.Substring(0, 16)
                         Dim yesterdayHash2 = yesterdayFullHash.Substring(16)
