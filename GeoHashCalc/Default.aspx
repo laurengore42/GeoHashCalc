@@ -10,24 +10,18 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <script runat="server">
-        Private Function GetDowValue(ByVal thisDate As DateTime) As String
-            Dim sReturn = IsAmericaAwakeYet(thisDate)
+        Private Function GetDowValue(ByVal thisDate As DateTime, ByVal today As Boolean) As String
+            Dim sReturn = IsAmericaAwakeYet(thisDate, today)
             If sReturn = Nothing Then
-                sReturn = IsAmericaAwakeYet(thisDate.Subtract(New TimeSpan(1, 0, 0, 0)))
+                sReturn = IsAmericaAwakeYet(thisDate.Subtract(New TimeSpan(1, 0, 0, 0)), today)
             End If
             Return sReturn
         End Function
         
-        Private Function IsAmericaAwakeYet(ByVal thisDate As DateTime) As String
+        Private Function IsAmericaAwakeYet(ByVal thisDate As DateTime, ByVal today As Boolean) As String
             Dim year = thisDate.Year.ToString
             Dim month = thisDate.Month.ToString
-            If month < 10 Then
-                month = "0" + month
-            End If
             Dim day = thisDate.Day.ToString
-            If day < 10 Then
-                day = "0" + day
-            End If
             Dim sURL As String
             sURL = "http://geo.crox.net/djia/" + year + "/" + month + "/" + day
             Dim wrGETURL As WebRequest = WebRequest.Create(sURL)
@@ -40,6 +34,20 @@
             Dim objReader As New StreamReader(objStream)
             Dim sReturn As String = ""
             sReturn += objReader.ReadLine
+            
+            If Not today Then
+                thisDate = thisDate.Add(New TimeSpan(1, 0, 0, 0))
+                year = thisDate.Year
+                month = thisDate.Month
+                day = thisDate.Day
+            End If
+            
+            If month < 10 Then
+                month = "0" + month
+            End If
+            If day < 10 Then
+                day = "0" + day
+            End If
             Return year + "-" + month + "-" + day + "-" + sReturn
         End Function
     
@@ -85,10 +93,10 @@
             ' debug 
             'lat = "0.111"
             'lon = "-0.111"
-            'dateUsed = New DateTime(2005,5,26)
+            'dateUsed = New DateTime(2016,1,20)
             
-            todayStartString = GetDowValue(dateUsed)
-            yesterdayStartString = GetDowValue(dateUsed.Subtract(New TimeSpan(1, 0, 0, 0)))
+            todayStartString = GetDowValue(dateUsed, True)
+            yesterdayStartString = GetDowValue(dateUsed.Subtract(New TimeSpan(1, 0, 0, 0)), False)
 
             Dim useString = todayStartString
             If CType(lat, Double) > -30 Then
