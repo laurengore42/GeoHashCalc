@@ -10,15 +10,15 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <script runat="server">
-        Private Function GetDowValue(ByVal thisDate As DateTime, ByVal today As Boolean) As String
-            Dim sReturn = IsAmericaAwakeYet(thisDate, today)
+        Private Function GetDowValue(ByVal thisDate As DateTime, ByVal west As Boolean) As String
+            Dim sReturn = IsAmericaAwakeYet(thisDate, west)
             If sReturn = Nothing Then
-                sReturn = IsAmericaAwakeYet(thisDate.Subtract(New TimeSpan(1, 0, 0, 0)), today)
+                sReturn = IsAmericaAwakeYet(thisDate.Subtract(New TimeSpan(1, 0, 0, 0)), west)
             End If
             Return sReturn
         End Function
         
-        Private Function IsAmericaAwakeYet(ByVal thisDate As DateTime, ByVal today As Boolean) As String
+        Private Function IsAmericaAwakeYet(ByVal thisDate As DateTime, ByVal west As Boolean) As String
             Dim year = thisDate.Year.ToString
             Dim month = thisDate.Month.ToString
             Dim day = thisDate.Day.ToString
@@ -35,7 +35,7 @@
             Dim sReturn As String = ""
             sReturn += objReader.ReadLine
             
-            If Not today Then
+            If Not west Then
                 thisDate = thisDate.Add(New TimeSpan(1, 0, 0, 0))
                 year = thisDate.Year
                 month = thisDate.Month
@@ -90,16 +90,16 @@
             Dim dateUsed = DateTime.Now
             
             ' debug 
-            'lat = "0.111"
-            'lon = "-0.111"
+            'lat = "-40.111"
+            'lon = "-90.111"
             'dateUsed = New DateTime(2016,1,20)
             
-            Dim todayStartString = GetDowValue(dateUsed, True)
-            Dim yesterdayStartString = GetDowValue(dateUsed.Subtract(New TimeSpan(1, 0, 0, 0)), False)
+            Dim westStartString = GetDowValue(dateUsed, True)
+            Dim eastStartString = GetDowValue(dateUsed.Subtract(New TimeSpan(1, 0, 0, 0)), False)
 
-            useString = todayStartString
-            If CType(lat, Double) > -30 Then
-                useString = yesterdayStartString
+            useString = westStartString
+            If CType(lon, Double) > -30 Then
+                useString = eastStartString
             End If
             
             fullHash = GenerateHash(useString)
@@ -123,6 +123,7 @@
         <div class="col">
             <h2>hello world</h2>
 
+            <% If useString IsNot Nothing Then%>
             <p><i>
                     Starting string: <%= useString%><br />
                     MD5 hash: <%= fullHash%><br />
@@ -133,6 +134,8 @@
             </i></p>
 
             <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>)</h4>
+            
+            <% End If%>
             <uc1:map ID="DrawMap" runat="server"></uc1:map>
         </div>
     </div>
