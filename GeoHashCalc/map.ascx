@@ -49,10 +49,12 @@
         var hashLon = 0<%=MarkLon%>;
 
         var pinImage;
-        pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "00FF00",
-            new google.maps.Size(21, 34),
-            new google.maps.Point(0,0),
-            new google.maps.Point(10, 34));
+        pinImage = {
+            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "00FF00",
+            size: new google.maps.Size(21, 34),
+            origin: new google.maps.Point(0,0),
+            anchor: new google.maps.Point(10, 34)
+        };
         var homeMarker = new google.maps.Marker({
             position: new google.maps.LatLng(<%=Querylat%>, <%=Querylon%>),
             map: map,
@@ -61,11 +63,12 @@
         
         var latlng;
         var hashMarker;
-        pinImage = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "FF0000",
-            new google.maps.Size(21, 34),
-            new google.maps.Point(0,0),
-            new google.maps.Point(10, 34));
-
+        pinImage = {
+            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "FF0000",
+            size: new google.maps.Size(21, 34),
+            origin: new google.maps.Point(0,0),
+            anchor: new google.maps.Point(10, 34)
+        };
         var markerCount = 6;
         for (i=1-markerCount; i<markerCount; i++) {
             var newLat = intStartLat + i;
