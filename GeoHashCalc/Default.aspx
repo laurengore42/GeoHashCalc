@@ -128,6 +128,7 @@
                     In decimal: <%= inthash1%>, <%= inthash2%><br />
                     Check: <a href="http://wiki.xkcd.com/geohashing/<%=useString.Substring(0, 10)%>" target="_blank"><%=useString.Substring(0, 10)%></a><br />
                     Go: <%= destLat%>, <%=destLon%><br />
+                    Check: <a href="http://wiki.xkcd.com/geohashing/<%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%>" target="_blank"><%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%></a><br />
             </i></p>
 
             <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>)</h4>
