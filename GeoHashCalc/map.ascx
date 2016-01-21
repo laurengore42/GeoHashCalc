@@ -65,12 +65,6 @@
             new google.maps.Size(21, 34),
             new google.maps.Point(0,0),
             new google.maps.Point(10, 34));
-        latlng = new google.maps.LatLng(intStartLat + hashLat, intStartLon - hashLon);
-        hashMarker = new google.maps.Marker({
-            position: latlng,
-            map: map,
-            icon: pinImage
-        });
 
         var markerCount = 6;
         for (i=1-markerCount; i<markerCount; i++) {
@@ -94,13 +88,13 @@
                         });
                     } else {
                         // longitude zero
-                        latlng = new google.maps.LatLng(newLat + hashLat, newLon - hashLon);
+                        latlng = new google.maps.LatLng(newLat + hashLat, 0 - hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
                             icon: pinImage
                         });
-                        latlng = new google.maps.LatLng(newLat + hashLat, newLon + hashLon);
+                        latlng = new google.maps.LatLng(newLat + hashLat, 0 + hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
@@ -109,14 +103,14 @@
                     }
                 } else if (newLat < 0) {
                     if (newLon > 0) {
-                        latlng = new google.maps.LatLng(newLat + hashLat, newLon + hashLon);
+                        latlng = new google.maps.LatLng(newLat - hashLat, newLon + hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
                             icon: pinImage
                         });
                     } else if (newLon < 0) {
-                        latlng = new google.maps.LatLng(newLat + hashLat, newLon - hashLon);
+                        latlng = new google.maps.LatLng(newLat - hashLat, newLon - hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
@@ -124,13 +118,13 @@
                         });
                     } else {
                         // longitude zero
-                        latlng = new google.maps.LatLng(newLat + hashLat, newLon - hashLon);
+                        latlng = new google.maps.LatLng(newLat - hashLat, 0 - hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
                             icon: pinImage
                         });
-                        latlng = new google.maps.LatLng(newLat + hashLat, newLon + hashLon);
+                        latlng = new google.maps.LatLng(newLat - hashLat, 0 + hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
@@ -140,13 +134,13 @@
                 } else {
                     if (newLon > 0) {
                         // latitude zero
-                        latlng = new google.maps.LatLng(newLat + hashLat, newLon + hashLon);
+                        latlng = new google.maps.LatLng(0 + hashLat, newLon + hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
                             icon: pinImage
                         });
-                        latlng = new google.maps.LatLng(newLat - hashLat, newLon + hashLon);
+                        latlng = new google.maps.LatLng(0 - hashLat, newLon + hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
@@ -154,13 +148,13 @@
                         });
                     } else if (newLon < 0) {
                         // latitude zero
-                        latlng = new google.maps.LatLng(newLat + hashLat, newLon - hashLon);
+                        latlng = new google.maps.LatLng(0 + hashLat, newLon - hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
                             icon: pinImage
                         });
-                        latlng = new google.maps.LatLng(newLat - hashLat, newLon - hashLon);
+                        latlng = new google.maps.LatLng(0 - hashLat, newLon - hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
@@ -168,25 +162,25 @@
                         });
                     } else {
                         // both zeroes
-                        latlng = new google.maps.LatLng(newLat + hashLat, newLon + hashLon);
+                        latlng = new google.maps.LatLng(0 + hashLat, 0 + hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
                             icon: pinImage
                         });
-                        latlng = new google.maps.LatLng(newLat + hashLat, newLon - hashLon);
+                        latlng = new google.maps.LatLng(0 + hashLat, 0 - hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
                             icon: pinImage
                         });
-                        latlng = new google.maps.LatLng(newLat - hashLat, newLon + hashLon);
+                        latlng = new google.maps.LatLng(0 - hashLat, 0 + hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
                             icon: pinImage
                         });
-                        latlng = new google.maps.LatLng(newLat - hashLat, newLon - hashLon);
+                        latlng = new google.maps.LatLng(0 - hashLat, 0 - hashLon);
                         hashMarker = new google.maps.Marker({
                             position: latlng,
                             map: map,
