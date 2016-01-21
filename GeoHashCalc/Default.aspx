@@ -110,9 +110,9 @@
             inthash2 = (Convert.ToUInt64(hash2, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
             
             ' avoid truncation errors
-            Dim desiredLength = 10000000
-            inthash1 = "." + Math.Round(Convert.ToInt32(inthash1 * desiredLength)).ToString
-            inthash2 = "." + Math.Round(Convert.ToInt32(inthash2 * desiredLength)).ToString
+            Dim desiredLength = 8
+            inthash1 = "." + Math.Round(Convert.ToInt32(inthash1 * Math.Pow(10, desiredLength))).ToString
+            inthash2 = "." + Math.Round(Convert.ToInt32(inthash2 * Math.Pow(10, desiredLength))).ToString
             
             destLat = lat.Substring(0, lat.IndexOf(".")) + inthash1
             destLon = lon.Substring(0, lon.IndexOf(".")) + inthash2
