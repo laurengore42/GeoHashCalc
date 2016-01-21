@@ -66,8 +66,7 @@
             Return outStr.ToLower
         End Function
         
-        Private todayStartString As String
-        Private yesterdayStartString As String
+        Private useString As String
         Private fullHash As String
         Private lat As String
         Private lon As String
@@ -95,10 +94,10 @@
             'lon = "-0.111"
             'dateUsed = New DateTime(2016,1,20)
             
-            todayStartString = GetDowValue(dateUsed, True)
-            yesterdayStartString = GetDowValue(dateUsed.Subtract(New TimeSpan(1, 0, 0, 0)), False)
+            Dim todayStartString = GetDowValue(dateUsed, True)
+            Dim yesterdayStartString = GetDowValue(dateUsed.Subtract(New TimeSpan(1, 0, 0, 0)), False)
 
-            Dim useString = todayStartString
+            useString = todayStartString
             If CType(lat, Double) > -30 Then
                 useString = yesterdayStartString
             End If
@@ -125,11 +124,11 @@
             <h2>hello world</h2>
 
             <p><i>
-                Starting string west of 30W: <%= todayStartString%><br />
-                    Starting string east of 30W: <%= yesterdayStartString%><br /><br />
+                    Starting string: <%= useString%><br />
                     MD5 hash: <%= fullHash%><br />
                     In halves: <%= hash1%>, <%= hash2%><br />
                     In decimal: <%= inthash1%>, <%= inthash2%><br />
+                    Check: <a href="http://wiki.xkcd.com/geohashing/<%=useString.Substring(0, 10)%>" target="_blank"><%=useString.Substring(0, 10)%></a><br />
                     Go: <%= destLat%>, <%=destLon%><br />
             </i></p>
 
