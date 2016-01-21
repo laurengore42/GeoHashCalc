@@ -126,8 +126,14 @@
     <div class="row">
         <div class="col">
             <h2>hello world</h2>
+            <% If useString IsNot Nothing Then%>
+            <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>)</h4>
+            <% End If%>
+
+            <uc1:map ID="DrawMap" runat="server"></uc1:map>
 
             <% If useString IsNot Nothing Then%>
+            <br />
             <p><i>
                     Starting string: <%= useString%><br />
                     MD5 hash: <%= fullHash%><br />
@@ -137,11 +143,7 @@
                     Go: <%= destLat%>, <%=destLon%><br />
                     Check: <a href="http://wiki.xkcd.com/geohashing/<%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%>" target="_blank"><%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%></a><br />
             </i></p>
-
-            <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>)</h4>
-            
             <% End If%>
-            <uc1:map ID="DrawMap" runat="server"></uc1:map>
         </div>
     </div>
 
