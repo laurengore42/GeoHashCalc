@@ -34,10 +34,24 @@
         alert("Don't know where you are - sorry.")
     }
 
+    function drawMarker(latlng, map, pinImage) {
+        var marked = new google.maps.Marker({
+            position: latlng,
+            map: map,
+            icon: pinImage
+        });
+        var labelled = new google.maps.InfoWindow({
+            content: '<a href="http://maps.google.co.uk/maps?q=' + latlng.toString() +'" target="_blank">' + latlng.toString() + '</a>'
+        });
+        marked.addListener('click', function() {
+            labelled.open(map,marked);
+        });
+    }
+
     function initialize(lat, lon) {
         var latlng = new google.maps.LatLng(lat, lon);
         var mapOptions = {
-            zoom: 10,
+            zoom: 7,
             center: latlng
         };
         map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -77,118 +91,54 @@
                 if (newLat > 0) {
                     if (newLon > 0) {
                         latlng = new google.maps.LatLng(newLat + hashLat, newLon + hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                     } else if (newLon < 0) {
                         latlng = new google.maps.LatLng(newLat + hashLat, newLon - hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                     } else {
                         // longitude zero
                         latlng = new google.maps.LatLng(newLat + hashLat, 0 - hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                         latlng = new google.maps.LatLng(newLat + hashLat, 0 + hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                     }
                 } else if (newLat < 0) {
                     if (newLon > 0) {
                         latlng = new google.maps.LatLng(newLat - hashLat, newLon + hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                     } else if (newLon < 0) {
                         latlng = new google.maps.LatLng(newLat - hashLat, newLon - hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                     } else {
                         // longitude zero
                         latlng = new google.maps.LatLng(newLat - hashLat, 0 - hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                         latlng = new google.maps.LatLng(newLat - hashLat, 0 + hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                     }
                 } else {
                     if (newLon > 0) {
                         // latitude zero
                         latlng = new google.maps.LatLng(0 + hashLat, newLon + hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                         latlng = new google.maps.LatLng(0 - hashLat, newLon + hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                     } else if (newLon < 0) {
                         // latitude zero
                         latlng = new google.maps.LatLng(0 + hashLat, newLon - hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                         latlng = new google.maps.LatLng(0 - hashLat, newLon - hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                     } else {
                         // both zeroes
                         latlng = new google.maps.LatLng(0 + hashLat, 0 + hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                         latlng = new google.maps.LatLng(0 + hashLat, 0 - hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                         latlng = new google.maps.LatLng(0 - hashLat, 0 + hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                         latlng = new google.maps.LatLng(0 - hashLat, 0 - hashLon);
-                        hashMarker = new google.maps.Marker({
-                            position: latlng,
-                            map: map,
-                            icon: pinImage
-                        });
+                        drawMarker(latlng, map, pinImage);
                     }
                 }
             }
