@@ -11,14 +11,6 @@
 
     <script runat="server">
         Private Function GetDowValue(ByVal thisDate As DateTime, ByVal west As Boolean) As String
-            Dim sReturn = IsAmericaAwakeYet(thisDate, west)
-            If sReturn = Nothing Then
-                sReturn = IsAmericaAwakeYet(thisDate.Subtract(New TimeSpan(1, 0, 0, 0)), west)
-            End If
-            Return sReturn
-        End Function
-        
-        Private Function IsAmericaAwakeYet(ByVal thisDate As DateTime, ByVal west As Boolean) As String
             Dim year = thisDate.Year.ToString
             Dim month = thisDate.Month.ToString
             Dim day = thisDate.Day.ToString
@@ -29,7 +21,7 @@
             Try
                 objStream = wrGETURL.GetResponse.GetResponseStream()
             Catch ex As Exception
-                Return Nothing
+                Return GetDowValue(thisDate.Subtract(New TimeSpan(1, 0, 0, 0)), west)
             End Try
             Dim objReader As New StreamReader(objStream)
             Dim sReturn As String = ""
