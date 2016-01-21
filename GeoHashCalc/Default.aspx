@@ -111,8 +111,8 @@
             
             ' avoid truncation errors
             Dim desiredLength = 8
-            inthash1 = "." + Math.Round(Convert.ToInt32(inthash1 * Math.Pow(10, desiredLength))).ToString
-            inthash2 = "." + Math.Round(Convert.ToInt32(inthash2 * Math.Pow(10, desiredLength))).ToString
+            inthash1 = "." + Math.Round(Convert.ToDouble(inthash1) * Math.Pow(10, desiredLength)).ToString
+            inthash2 = "." + Math.Round(Convert.ToDouble(inthash2) * Math.Pow(10, desiredLength)).ToString
             
             destLat = lat.Substring(0, lat.IndexOf(".")) + inthash1
             destLon = lon.Substring(0, lon.IndexOf(".")) + inthash2
