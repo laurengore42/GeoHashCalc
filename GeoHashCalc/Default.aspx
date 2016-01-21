@@ -90,9 +90,9 @@
             Dim dateUsed = DateTime.Now
             
             ' debug 
-            'lat = "-40.111"
+            'lat = "40.111"
             'lon = "-90.111"
-            'dateUsed = New DateTime(2016,1,20)
+            'dateUsed = New DateTime(2010,6,12)
             
             Dim westStartString = GetDowValue(dateUsed, True)
             Dim eastStartString = GetDowValue(dateUsed.Subtract(New TimeSpan(1, 0, 0, 0)), False)
@@ -109,8 +109,13 @@
             inthash1 = (Convert.ToUInt64(hash1, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
             inthash2 = (Convert.ToUInt64(hash2, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
             
-            destLat = lat.Substring(0, lat.IndexOf(".")) + inthash1.ToString().Substring(0, 7)
-            destLon = lon.Substring(0, lon.IndexOf(".")) + inthash2.ToString().Substring(0, 7)
+            ' avoid truncation errors
+            Dim desiredLength = 10000000
+            inthash1 = "." + Math.Round(Convert.ToInt32(inthash1 * desiredLength)).ToString
+            inthash2 = "." + Math.Round(Convert.ToInt32(inthash2 * desiredLength)).ToString
+            
+            destLat = lat.Substring(0, lat.IndexOf(".")) + inthash1
+            destLon = lon.Substring(0, lon.IndexOf(".")) + inthash2
             
             DrawMap.QueryLat = lat
             DrawMap.QueryLon = lon
