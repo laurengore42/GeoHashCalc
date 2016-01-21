@@ -60,6 +60,7 @@
         
         Private useString As String
         Private fullHash As String
+        Private tomorrow As String
         Private lat As String
         Private lon As String
         Private hash1 As String
@@ -87,6 +88,10 @@
             End If
             
             Dim dateUsed = DateTime.Now
+            tomorrow = Request.QueryString("tomorrow")
+            If Not tomorrow = Nothing AndAlso tomorrow = "true" Then
+                dateUsed = dateUsed.Add(New TimeSpan(1, 0, 0, 0))
+            End If
             
             ' debug 
             'lat = "40.111"
@@ -143,6 +148,15 @@
                     Go: <%= destLat%>, <%=destLon%><br />
                     Check: <a href="http://wiki.xkcd.com/geohashing/<%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%>" target="_blank"><%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%></a><br />
             </i></p>
+            <p>
+                <% If CType(lon, Double) > -30 Then
+                    If Not tomorrow = Nothing AndAlso tomorrow = "true" Then%>
+                <a href='<%=Request.Path%>?lat=<%=lat%>&lon=<%=lon%>&tomorrow=false'>Check today</a>
+                <% Else%>
+                <a href='<%=Request.Path%>?lat=<%=lat%>&lon=<%=lon%>&tomorrow=true'>Check tomorrow</a>
+                <% End If
+                End If%>
+            </p>
             <% End If%>
         </div>
     </div>
