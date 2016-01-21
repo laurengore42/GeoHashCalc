@@ -109,7 +109,7 @@
             inthash2 = (Convert.ToUInt64(hash2, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
             
             ' avoid truncation errors
-            Dim desiredLength = 8
+            Dim desiredLength = 7
             inthash1 = "." + Math.Round(Convert.ToDouble(inthash1) * Math.Pow(10, desiredLength)).ToString
             inthash2 = "." + Math.Round(Convert.ToDouble(inthash2) * Math.Pow(10, desiredLength)).ToString
             
