@@ -76,7 +76,6 @@
         });
         
         var latlng;
-        var hashMarker;
         pinImage = {
             url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "FF0000",
             size: new google.maps.Size(21, 34),
