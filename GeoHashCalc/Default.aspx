@@ -79,6 +79,13 @@
                 Return
             End If
             
+            If lat.IndexOf(".") = -1 Then
+                lat = lat + ".0"
+            End If
+            If lon.IndexOf(".") = -1 Then
+                lon = lon + ".0"
+            End If
+            
             Dim dateUsed = DateTime.Now
             
             ' debug 
