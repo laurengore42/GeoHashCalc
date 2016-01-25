@@ -7,6 +7,9 @@
     Public Property MarkLat As String = ""
     Public Property MarkLon As String = ""
     
+    Public Property GlobalLat As String = ""
+    Public Property GlobalLon As String = ""
+    
 </script>
 
 <style>
@@ -61,7 +64,10 @@
         var intStartLon = <%=QueryLon.Substring(0,QueryLon.IndexOf("."))%>;
         var hashLat = 0<%=MarkLat%>;
         var hashLon = 0<%=MarkLon%>;
-
+        var globalLat = 0<%=GlobalLat%>;
+        var globalLon = 0<%=GlobalLon%>;
+        
+        // home location in green
         var pinImage;
         pinImage = {
             url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "00FF00",
@@ -75,7 +81,18 @@
             icon: pinImage
         });
         
+        // globalhash in white
         var latlng;
+        pinImage = {
+            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "FFFFFF",
+            size: new google.maps.Size(21, 34),
+            origin: new google.maps.Point(0,0),
+            anchor: new google.maps.Point(10, 34)
+        };
+        latlng = new google.maps.LatLng((180*globalLat)-90, (360*globalLon)-180);
+        drawMarker(latlng, map, pinImage);
+        
+        // regular hashes in red
         pinImage = {
             url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "FF0000",
             size: new google.maps.Size(21, 34),

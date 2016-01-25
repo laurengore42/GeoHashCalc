@@ -67,6 +67,8 @@
         Private hash2 As String
         Private inthash1 As String
         Private inthash2 As String
+        Private globalinthash1 As String
+        Private globalinthash2 As String
         Private destLat As String
         Private destLon As String
         
@@ -121,10 +123,26 @@
             destLat = lat.Substring(0, lat.IndexOf(".")) + inthash1
             destLon = lon.Substring(0, lon.IndexOf(".")) + inthash2
             
+            If (useString = westStartString) Then
+                Dim globalhashstring = eastStartString
+                Dim globalfullHash = GenerateHash(eastStartString)
+                Dim globalhash1 = globalfullHash.Substring(0, 16)
+                Dim globalhash2 = globalfullHash.Substring(16)
+                globalinthash1 = (Convert.ToUInt64(globalhash1, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
+                globalinthash2 = (Convert.ToUInt64(globalhash2, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
+                globalinthash1 = "." + Math.Round(Convert.ToDouble(globalinthash1) * Math.Pow(10, desiredLength)).ToString
+                globalinthash2 = "." + Math.Round(Convert.ToDouble(globalinthash2) * Math.Pow(10, desiredLength)).ToString
+            Else
+                globalinthash1 = inthash1
+                globalinthash2 = inthash2
+            End If
+            
             DrawMap.QueryLat = lat
             DrawMap.QueryLon = lon
             DrawMap.MarkLat = destLat.Substring(destLat.IndexOf("."))
             DrawMap.MarkLon = destLon.Substring(destLon.IndexOf("."))
+            DrawMap.GlobalLat = globalinthash1
+            DrawMap.GlobalLon = globalinthash2
         End Sub
     </script>
 
@@ -147,6 +165,8 @@
                     Check: <a href="http://wiki.xkcd.com/geohashing/<%=useString.Substring(0, 10)%>" target="_blank"><%=useString.Substring(0, 10)%></a><br />
                     Go: <%= destLat%>, <%=destLon%><br />
                     Check: <a href="http://wiki.xkcd.com/geohashing/<%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%>" target="_blank"><%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%></a><br />
+                <br />
+                    Globalhash: <%= (Convert.ToDouble("0" + globalinthash1) * 180) - 90%>, <%= (Convert.ToDouble("0" + globalinthash2) * 360) - 180%>
             </i></p>
             <p>
                 <% If CType(lon, Double) > -30 Then
