@@ -166,7 +166,7 @@
                     Go: <%= destLat%>, <%=destLon%><br />
                     Check: <a href="http://wiki.xkcd.com/geohashing/<%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%>" target="_blank"><%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%></a><br />
                 <br />
-                    Globalhash: <%= (Convert.ToDouble("0" + globalinthash1) * 180) - 90%>, <%= (Convert.ToDouble("0" + globalinthash2) * 360) - 180%>
+                    Globalhash: <%= Math.Round((Convert.ToDecimal("0" + globalinthash1) * 180) - 90, 7)%>, <%= Math.Round((Convert.ToDecimal("0" + globalinthash2) * 360) - 180, 7)%>
             </i></p>
             <p>
                 <% If CType(lon, Double) > -30 Then
