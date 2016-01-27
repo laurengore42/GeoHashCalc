@@ -30,11 +30,16 @@
         var whereLat = position.coords.latitude
         var whereLon = position.coords.longitude
 
-        location.replace(location.origin + "?lat=" + whereLat + "&lon=" + whereLon)
+        var locationString = location.origin + "?lat=" + whereLat + "&lon=" + whereLon;
+        <% If Page.Request.QueryString("date") IsNot Nothing AndAlso Page.Request.QueryString("date") IsNot "" Then%>
+        locationString += "&date=" + "<%=Page.Request.QueryString("date")%>";
+        <% End If%>
+
+        location.replace(locationString);
     }
 
     function locateFail() {
-        alert("Don't know where you are - sorry.")
+        alert("Don't know where you are - sorry.");
     }
 
     function drawMarker(latlng, map, pinImage) {
@@ -166,9 +171,9 @@
     $(document).ready(function () {
         queries = {};
         $.each(document.location.search.substr(1).split('&'), function (c, q) {
-            var i = q.split('=')
+            var i = q.split('=');
             if (i[0] != undefined && i[1] != undefined) {
-                queries[i[0].toString()] = i[1].toString()
+                queries[i[0].toString()] = i[1].toString();
             }
         })
         
@@ -177,9 +182,9 @@
                 navigator.geolocation.getCurrentPosition(locateSuccess, locateFail,
                 {
                     enableHighAccuracy: true
-                })
+                });
             } else {
-                alert("Turn geolocation on.")
+                alert("Turn geolocation on.");
             }
         } else {
             initialize(queries["lat"], queries["lon"]);

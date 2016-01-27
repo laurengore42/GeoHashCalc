@@ -89,7 +89,16 @@
                 lon = lon + ".0"
             End If
             
-            Dim dateUsed = DateTime.Now
+            Dim dateUsedString = Request.QueryString("date")
+            Dim dateUsed As DateTime = Nothing
+            
+            If Not dateUsedString = Nothing AndAlso Not dateUsedString = "" Then
+                DateTime.TryParse(Request.QueryString("date"), dateUsed)
+            End If
+            If dateUsed = Nothing Then
+                dateUsed = DateTime.Now
+            End If
+            
             tomorrow = Request.QueryString("tomorrow")
             If Not tomorrow = Nothing AndAlso tomorrow = "true" Then
                 dateUsed = dateUsed.Add(New TimeSpan(1, 0, 0, 0))
