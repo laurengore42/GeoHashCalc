@@ -42,6 +42,45 @@
         alert("Don't know where you are - sorry.");
     }
 
+    function drawLine(location, map, isLongitude) {
+        var start;
+        var middle;
+        var end;
+        var drawnLine;
+
+        var line
+
+        if (isLongitude) {
+            // Mercator projection never actually reaches the poles
+            // cuts off at just over 85 degrees in Google's depiction
+            start = new google.maps.LatLng(-89, location);
+            middle = new google.maps.LatLng(0, location);
+            end = new google.maps.LatLng(89, location);
+            
+            drawnLine = new google.maps.Polyline({
+                path: [start, middle, end],
+                geodesic: true,
+                map: map,
+                strokeColor: 'fuchsia',
+                strokeOpacity: 1.0,
+                strokeWeight: 0.5
+            });
+        } else {
+            start = new google.maps.LatLng(location, -180);
+            middle = new google.maps.LatLng(location, 0);
+            end = new google.maps.LatLng(location, 180);
+            
+            drawnLine = new google.maps.Polyline({
+                path: [start, middle, end],
+                geodesic: false,
+                map: map,
+                strokeColor: 'fuchsia',
+                strokeOpacity: 1.0,
+                strokeWeight: 0.5
+            });
+        }
+    }
+
     function drawMarker(latlng, map, pinImage) {
         var marked = new google.maps.Marker({
             position: latlng,
@@ -71,6 +110,14 @@
         var hashLon = 0<%=MarkLon%>;
         var globalLat = 0<%=GlobalLat%>;
         var globalLon = 0<%=GlobalLon%>;
+
+        // lines
+        for (i=-180;i<180;i++) {
+            drawLine(i,map,true);
+        }
+        for (i=-90;i<90;i++) {
+            drawLine(i,map,false);
+        }
         
         // home location in green
         var pinImage;
