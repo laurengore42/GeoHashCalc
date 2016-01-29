@@ -42,7 +42,7 @@
         alert("Don't know where you are - sorry.");
     }
 
-    function drawLine(location, map, isLongitude) {
+    function drawLine(location, map, color, isLongitude) {
         var start;
         var middle;
         var end;
@@ -61,7 +61,7 @@
                 path: [start, middle, end],
                 geodesic: true,
                 map: map,
-                strokeColor: 'fuchsia',
+                strokeColor: color,
                 strokeOpacity: 1.0,
                 strokeWeight: 0.5
             });
@@ -74,7 +74,7 @@
                 path: [start, middle, end],
                 geodesic: false,
                 map: map,
-                strokeColor: 'fuchsia',
+                strokeColor: color,
                 strokeOpacity: 1.0,
                 strokeWeight: 0.5
             });
@@ -113,10 +113,10 @@
 
         // lines
         for (i=-180;i<180;i++) {
-            drawLine(i,map,true);
+            drawLine(i,map,'fuchsia',true);
         }
         for (i=-90;i<90;i++) {
-            drawLine(i,map,false);
+            drawLine(i,map,'fuchsia',false);
         }
         
         // home location in green
@@ -151,7 +151,7 @@
             origin: new google.maps.Point(0,0),
             anchor: new google.maps.Point(10, 34)
         };
-        var markerCount = 6;
+        var markerCount = 15;
         for (i=1-markerCount; i<markerCount; i++) {
             var newLat = intStartLat + i;
             for (j=1-markerCount; j<markerCount; j++) {
