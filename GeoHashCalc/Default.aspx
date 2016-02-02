@@ -133,6 +133,8 @@
             destLon = lon.Substring(0, lon.IndexOf(".")) + inthash2
             
             If (useString = westStartString) Then
+                ' West
+                
                 Dim globalhashstring = eastStartString
                 Dim globalfullHash = GenerateHash(eastStartString)
                 Dim globalhash1 = globalfullHash.Substring(0, 16)
@@ -142,8 +144,23 @@
                 globalinthash1 = "." + Math.Round(Convert.ToDouble(globalinthash1) * Math.Pow(10, desiredLength)).ToString
                 globalinthash2 = "." + Math.Round(Convert.ToDouble(globalinthash2) * Math.Pow(10, desiredLength)).ToString
             Else
+                ' East
+                
                 globalinthash1 = inthash1
                 globalinthash2 = inthash2
+                
+                Dim tomorrowString = GetDowValue(dateUsed, False)
+                If Not eastStartString = tomorrowString Then
+                    Dim fullHashTomorrow = GenerateHash(tomorrowString)
+                    Dim hash1tomorrow = fullHashTomorrow.Substring(0, 16)
+                    Dim hash2tomorrow = fullHashTomorrow.Substring(16)
+                    Dim inthash1tomorrow = (Convert.ToUInt64(hash1tomorrow, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
+                    Dim inthash2tomorrow = (Convert.ToUInt64(hash2tomorrow, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
+                    Dim destLattomorrow = lat.Substring(0, lat.IndexOf(".")) + inthash1tomorrow
+                    Dim destLontomorrow = lon.Substring(0, lon.IndexOf(".")) + inthash2tomorrow
+                    DrawMap.MarkLatTomorrow = destLattomorrow.Substring(destLat.IndexOf("."))
+                    DrawMap.MarkLonTomorrow = destLontomorrow.Substring(destLon.IndexOf("."))
+                End If
             End If
             
             DrawMap.QueryLat = lat
@@ -158,6 +175,9 @@
     <div class="row">
         <div class="col">
             <h2>hello world</h2>
+            <% If useString IsNot Nothing AndAlso Not String.IsNullOrEmpty (DrawMap.MarkLatTomorrow) Then%>
+            <h4>Showing markers for <span style="color:#ff0000">today</span> and <span style="color:#ffff00">tomorrow</span></h4>
+            <% End If %>
             <% If useString IsNot Nothing Then%>
             <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>)</h4>
             <% End If%>
@@ -177,15 +197,6 @@
                 <br />
                     Globalhash: <%= Math.Round((Convert.ToDecimal("0" + globalinthash1) * 180) - 90, 7)%>, <%= Math.Round((Convert.ToDecimal("0" + globalinthash2) * 360) - 180, 7)%>
             </i></p>
-            <p>
-                <% If CType(lon, Double) > -30 Then
-                    If Not tomorrow = Nothing AndAlso tomorrow = "true" Then%>
-                <a href='<%=Request.Path%>?lat=<%=lat%>&lon=<%=lon%>&tomorrow=false'>Check today</a>
-                <% Else%>
-                <a href='<%=Request.Path%>?lat=<%=lat%>&lon=<%=lon%>&tomorrow=true'>Check tomorrow</a>
-                <% End If
-                End If%>
-            </p>
             <% End If%>
         </div>
     </div>

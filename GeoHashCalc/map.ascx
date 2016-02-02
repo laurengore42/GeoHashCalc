@@ -6,6 +6,8 @@
     
     Public Property MarkLat As String = ""
     Public Property MarkLon As String = ""
+    Public Property MarkLatTomorrow As String = ""
+    Public Property MarkLonTomorrow As String = ""
     
     Public Property GlobalLat As String = ""
     Public Property GlobalLon As String = ""
@@ -108,6 +110,8 @@
         var intStartLon = <%=QueryLon.Substring(0,QueryLon.IndexOf("."))%>;
         var hashLat = 0<%=MarkLat%>;
         var hashLon = 0<%=MarkLon%>;
+        var hashLatTomorrow = 0<%=MarkLatTomorrow%>;
+        var hashLonTomorrow = 0<%=MarkLonTomorrow%>;
         var globalLat = 0<%=GlobalLat%>;
         var globalLon = 0<%=GlobalLon%>;
 
@@ -151,7 +155,7 @@
             origin: new google.maps.Point(0,0),
             anchor: new google.maps.Point(10, 34)
         };
-        var markerCount = 15;
+        var markerCount = 6;
         for (i=1-markerCount; i<markerCount; i++) {
             var newLat = intStartLat + i;
             for (j=1-markerCount; j<markerCount; j++) {
@@ -207,6 +211,76 @@
                         drawMarker(latlng, map, pinImage);
                         latlng = new google.maps.LatLng(0 - hashLat, 0 - hashLon);
                         drawMarker(latlng, map, pinImage);
+                    }
+                }
+            }
+            
+            // tomorrow's hashes in yellow
+            if (hashLatTomorrow != 0 || hashLonTomorrow != 0) {
+                var pinImageTomorrow = {
+                    url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "FFFF00",
+                    size: new google.maps.Size(21, 34),
+                    origin: new google.maps.Point(0,0),
+                    anchor: new google.maps.Point(10, 34)
+                };
+                var markerCount = 6;
+                for (k=1-markerCount; k<markerCount; k++) {
+                    var newLat = intStartLat + k;
+                    for (l=1-markerCount; l<markerCount; l++) {
+                        var newLon = intStartLon + l;
+                        if (newLat > 0) {
+                            if (newLon > 0) {
+                                latlng = new google.maps.LatLng(newLat + hashLatTomorrow, newLon + hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                            } else if (newLon < 0) {
+                                latlng = new google.maps.LatLng(newLat + hashLatTomorrow, newLon - hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                            } else {
+                                // longitude zero
+                                latlng = new google.maps.LatLng(newLat + hashLatTomorrow, 0 - hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                                latlng = new google.maps.LatLng(newLat + hashLatTomorrow, 0 + hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                            }
+                        } else if (newLat < 0) {
+                            if (newLon > 0) {
+                                latlng = new google.maps.LatLng(newLat - hashLatTomorrow, newLon + hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                            } else if (newLon < 0) {
+                                latlng = new google.maps.LatLng(newLat - hashLatTomorrow, newLon - hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                            } else {
+                                // longitude zero
+                                latlng = new google.maps.LatLng(newLat - hashLatTomorrow, 0 - hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                                latlng = new google.maps.LatLng(newLat - hashLatTomorrow, 0 + hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                            }
+                        } else {
+                            if (newLon > 0) {
+                                // latitude zero
+                                latlng = new google.maps.LatLng(0 + hashLatTomorrow, newLon + hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                                latlng = new google.maps.LatLng(0 - hashLatTomorrow, newLon + hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                            } else if (newLon < 0) {
+                                // latitude zero
+                                latlng = new google.maps.LatLng(0 + hashLatTomorrow, newLon - hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                                latlng = new google.maps.LatLng(0 - hashLatTomorrow, newLon - hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                            } else {
+                                // both zeroes
+                                latlng = new google.maps.LatLng(0 + hashLatTomorrow, 0 + hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                                latlng = new google.maps.LatLng(0 + hashLatTomorrow, 0 - hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                                latlng = new google.maps.LatLng(0 - hashLatTomorrow, 0 + hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                                latlng = new google.maps.LatLng(0 - hashLatTomorrow, 0 - hashLonTomorrow);
+                                drawMarker(latlng, map, pinImageTomorrow);
+                            }
+                        }
                     }
                 }
             }
