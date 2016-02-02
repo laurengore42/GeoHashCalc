@@ -176,7 +176,7 @@
         <div class="col">
             <h2>hello world</h2>
             <% If useString IsNot Nothing AndAlso Not String.IsNullOrEmpty (DrawMap.MarkLatTomorrow) Then%>
-            <h4>Showing markers for <span style="color:#ff0000">today</span> and <span style="color:#ffff00">tomorrow</span></h4>
+            <h4>Showing markers for <span style="color:#<%=DrawMap.HashColor%>">today</span> and <span style="color:#<%=DrawMap.TomorrowColor%>">tomorrow</span></h4>
             <% End If %>
             <% If useString IsNot Nothing Then%>
             <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>)</h4>

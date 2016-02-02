@@ -12,6 +12,12 @@
     Public Property GlobalLat As String = ""
     Public Property GlobalLon As String = ""
     
+    Public Property HomeColor As String = "00FF00" ' green
+    Public Property HashColor As String = "FF0000" ' red
+    Public Property GlobalColor As String = "FFFFFF" ' white
+    Public Property TomorrowColor As String = "FFFF00" ' yellow
+    Public Property LineColor As String = "FF00FF" ' magenta
+    
 </script>
 
 <style>
@@ -115,18 +121,24 @@
         var globalLat = 0<%=GlobalLat%>;
         var globalLon = 0<%=GlobalLon%>;
 
+        var homeColor = "<%=HomeColor%>";
+        var globalColor = "<%=GlobalColor%>";
+        var hashColor = "<%=HashColor%>";
+        var tomorrowColor = "<%=TomorrowColor%>";
+        var lineColor = "<%=LineColor%>";
+
         // lines
         for (i=-180;i<180;i++) {
-            drawLine(i,map,'fuchsia',true);
+            drawLine(i,map,lineColor,true);
         }
         for (i=-90;i<90;i++) {
-            drawLine(i,map,'fuchsia',false);
+            drawLine(i,map,lineColor,false);
         }
         
-        // home location in green
+        // home location
         var pinImage;
         pinImage = {
-            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "00FF00",
+            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + homeColor,
             size: new google.maps.Size(21, 34),
             origin: new google.maps.Point(0,0),
             anchor: new google.maps.Point(10, 34)
@@ -137,10 +149,10 @@
             icon: pinImage
         });
         
-        // globalhash in white
+        // globalhash
         var latlng;
         pinImage = {
-            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "FFFFFF",
+            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + globalColor,
             size: new google.maps.Size(21, 34),
             origin: new google.maps.Point(0,0),
             anchor: new google.maps.Point(10, 34)
@@ -150,7 +162,7 @@
         
         // regular hashes in red
         pinImage = {
-            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "FF0000",
+            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + hashColor,
             size: new google.maps.Size(21, 34),
             origin: new google.maps.Point(0,0),
             anchor: new google.maps.Point(10, 34)
@@ -218,7 +230,7 @@
             // tomorrow's hashes in yellow
             if (hashLatTomorrow != 0 || hashLonTomorrow != 0) {
                 var pinImageTomorrow = {
-                    url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + "FFFF00",
+                    url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + tomorrowColor,
                     size: new google.maps.Size(21, 34),
                     origin: new google.maps.Point(0,0),
                     anchor: new google.maps.Point(10, 34)
