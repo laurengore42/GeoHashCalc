@@ -175,10 +175,10 @@
     <div class="row">
         <div class="col">
             <h2>hello world</h2>
-            <% If useString IsNot Nothing AndAlso Not String.IsNullOrEmpty (DrawMap.MarkLatTomorrow) Then%>
-            <h4>Showing markers for <span style="color:#<%=DrawMap.HashColor%>">today</span> and <span style="color:#<%=DrawMap.TomorrowColor%>">tomorrow</span></h4>
-            <% End If %>
             <% If useString IsNot Nothing Then%>
+                <% If Not String.IsNullOrEmpty(DrawMap.MarkLatTomorrow) Then%>
+            <h4>Showing markers for <span style="color:#<%=DrawMap.HashColor%>">today</span> and <span style="color:#<%=DrawMap.TomorrowColor%>">tomorrow</span></h4>
+                <% End If %>
             <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>)</h4>
             <% End If%>
 
