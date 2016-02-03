@@ -60,6 +60,7 @@
         
         Private useString As String
         Private fullHash As String
+        Private west As Boolean
         Private tomorrow As String
         Private lat As String
         Private lon As String
@@ -107,7 +108,7 @@
             'lon = "-90.111"
             'dateUsed = New DateTime(2010,6,12)
             
-            Dim west = True
+            west = True
             If CType(lon, Double) > -30 Then
                 west = False
             End If
@@ -184,7 +185,7 @@
                 <% If Not String.IsNullOrEmpty(DrawMap.MarkLatTomorrow) Then%>
             <h4>Showing markers for <span style="color:#<%=DrawMap.HashColor%>">today</span> and <span style="color:#<%=DrawMap.TomorrowColor%>">tomorrow</span></h4>
                 <% End If %>
-            <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>)</h4>
+            <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>), <span style="color:#<%=DrawMap.HomeColor%>;"><%If west Then%>west<%Else%>east<% End If%></span> of the -30W line</h4>
             <% End If%>
 
             <uc1:map ID="DrawMap" runat="server"></uc1:map>
