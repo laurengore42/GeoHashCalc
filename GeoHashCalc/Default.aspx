@@ -107,12 +107,20 @@
             'lon = "-90.111"
             'dateUsed = New DateTime(2010,6,12)
             
-            Dim westStartString = GetDowValue(dateUsed, True)
-            Dim eastStartString = GetDowValue(dateUsed.Subtract(New TimeSpan(1, 0, 0, 0)), False)
-
-            useString = westStartString
+            Dim west = True
             If CType(lon, Double) > -30 Then
-                useString = eastStartString
+                west = False
+            End If
+            
+            Dim weekend = False
+            If dateUsed.DayOfWeek = System.DayOfWeek.Saturday OrElse dateUsed.DayOfWeek = System.DayOfWeek.Sunday Then
+                weekend = True
+            End If
+            
+            If weekend OrElse west Then
+                useString = GetDowValue(dateUsed, True)
+            Else
+                useString = GetDowValue(dateUsed.Subtract(New TimeSpan(1, 0, 0, 0)), False)
             End If
             
             fullHash = GenerateHash(useString)
@@ -124,8 +132,8 @@
             
             ' avoid truncation errors
             Dim desiredLength = 7
-            inthash1 = "." + Math.Round(Convert.ToDouble(inthash1) * Math.Pow(10, desiredLength)).ToString
-            inthash2 = "." + Math.Round(Convert.ToDouble(inthash2) * Math.Pow(10, desiredLength)).ToString
+            inthash1 = "." + Math.Round(Convert.ToDouble(inthash1) * Math.Pow(10, desiredLength)).ToString.PadLeft(desiredLength, "0")
+            inthash2 = "." + Math.Round(Convert.ToDouble(inthash2) * Math.Pow(10, desiredLength)).ToString.PadLeft(desiredLength, "0")
             
             destLat = lat.Substring(0, lat.IndexOf(".")) + inthash1
             destLon = lon.Substring(0, lon.IndexOf(".")) + inthash2
@@ -133,11 +141,9 @@
             Dim globalinthash1 = ""
             Dim globalinthash2 = ""
             
-            If (useString = westStartString) Then
-                ' West
-                
-                Dim globalhashstring = eastStartString
-                Dim globalfullHash = GenerateHash(eastStartString)
+            If west Then
+                Dim globalhashstring = GetDowValue(dateUsed.Subtract(New TimeSpan(1, 0, 0, 0)), False)
+                Dim globalfullHash = GenerateHash(globalhashstring)
                 Dim globalhash1 = globalfullHash.Substring(0, 16)
                 Dim globalhash2 = globalfullHash.Substring(16)
                 globalinthash1 = (Convert.ToUInt64(globalhash1, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
@@ -145,13 +151,11 @@
                 globalinthash2 = (Convert.ToUInt64(globalhash2, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
                 globalinthash2 = "." + Math.Round(Convert.ToDouble(globalinthash2) * Math.Pow(10, desiredLength)).ToString
             Else
-                ' East
-                
                 globalinthash1 = inthash1
                 globalinthash2 = inthash2
                 
                 Dim tomorrowString = GetDowValue(dateUsed, False)
-                If Not eastStartString = tomorrowString Then
+                If Not useString = tomorrowString Then
                     Dim fullHashTomorrow = GenerateHash(tomorrowString)
                     Dim hash1tomorrow = fullHashTomorrow.Substring(0, 16)
                     Dim hash2tomorrow = fullHashTomorrow.Substring(16)
