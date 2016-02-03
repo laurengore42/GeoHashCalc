@@ -12,11 +12,11 @@
     Public Property GlobalLat As String = ""
     Public Property GlobalLon As String = ""
     
-    Public Property HomeColor As String = "00FF00" ' green
-    Public Property HashColor As String = "FF0000" ' red
+    Public Property HomeColor As String = "008000" ' green
+    Public Property HashColor As String = "CD5C5C" ' indianred
     Public Property GlobalColor As String = "FFFFFF" ' white
-    Public Property TomorrowColor As String = "FFFF00" ' yellow
-    Public Property LineColor As String = "FF00FF" ' magenta
+    Public Property TomorrowColor As String = "FFD700" ' gold
+    Public Property LineColor As String = "FF00FF" ' fuchsia
     
 </script>
 
