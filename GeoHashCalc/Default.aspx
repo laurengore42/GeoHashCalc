@@ -59,6 +59,7 @@
         End Function
         
         Private dateUsed As DateTime
+        Private dateUsedString As String
         Private useString As String
         Private fullHash As String
         Private west As Boolean
@@ -89,7 +90,7 @@
                 lon = lon + ".0"
             End If
             
-            Dim dateUsedString = Request.QueryString("date")
+            dateUsedString = Request.QueryString("date")
             dateUsed = Nothing
             
             If Not dateUsedString = Nothing AndAlso Not dateUsedString = "" Then
@@ -124,6 +125,10 @@
             Else
                 useString = GetDowValue(dateUsed.Subtract(New TimeSpan(1, 0, 0, 0)), False)
             End If
+            
+            ' if they requested a future date, parse out what we actually got
+            dateUsedString = useString.Substring(0, 10)
+            DateTime.TryParse(dateUsedString, dateUsed)
             
             fullHash = GenerateHash(useString)
             hash1 = fullHash.Substring(0, 16)
@@ -179,13 +184,22 @@
         End Sub
     </script>
 
+    <%=""%>
     <div class="row">
         <div class="col">
             <h2>hello world</h2>
             <% If useString IsNot Nothing Then%>
-                <% If Not String.IsNullOrEmpty(DrawMap.MarkLatTomorrow) Then%>
-            <h4>Showing markers for <span style="color:#<%=DrawMap.HashColor%>">today</span> and <span style="color:#<%=DrawMap.TomorrowColor%>">tomorrow</span></h4>
+            <h4>Showing markers for <a href="http://wiki.xkcd.com/geohashing/<%=dateUsedString%>" target="_blank">
+                <% If dateUsed.Date = DateTime.Now.Date %>
+            <span style="color:#<%=DrawMap.HashColor%>">today</span></a>
+            <%If Not String.IsNullOrEmpty(DrawMap.MarkLatTomorrow) Then%> and <span style="color:#<%=DrawMap.TomorrowColor%>">tomorrow</span>
+            <% End If %></h4>
+            <% ElseIf dateUsed.Date = DateTime.Now.Date.AddDays(1) Then%>
+            <span style="color:#<%=DrawMap.HashColor%>">tomorrow</span></a>
+            <% Else %>
+            <span style="color:#<%=DrawMap.HashColor%>"><%=dateUsedString%></span></a>
                 <% End If %>
+            </h4>
             <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>), <span style="color:#<%=DrawMap.HomeColor%>;"><%If west Then%>west<%Else%>east<% End If%></span> of the -30W line</h4>
             <% Dim dateBack = dateUsed.AddDays(-1)
                 Dim dbYear = dateBack.Year
@@ -221,9 +235,7 @@
                 MD5 hash: <%= fullHash%><br />
                 In halves: <%= hash1%>, <%= hash2%><br />
                 In decimal: <%= inthash1%>, <%= inthash2%><br />
-                Check: <a href="http://wiki.xkcd.com/geohashing/<%=useString.Substring(0, 10)%>" target="_blank"><%=useString.Substring(0, 10)%></a><br />
                 Go: <%= destLat%>, <%=destLon%><br />
-                Check: <a href="http://wiki.xkcd.com/geohashing/<%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%>" target="_blank"><%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%></a><br />
                 <br />
                 Globalhash: <a href="http://maps.google.co.uk/maps?q=<%=DrawMap.GlobalLat%>,<%=DrawMap.GlobalLon%>" target="_blank">(<%=DrawMap.GlobalLat%>, <%=DrawMap.GlobalLon%>)</a><br />
                 <span id="globalHashLocation" />
