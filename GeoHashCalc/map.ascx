@@ -69,7 +69,7 @@
                 path: [start, middle, end],
                 geodesic: true,
                 map: map,
-                strokeColor: color,
+                strokeColor: "#" + color,
                 strokeOpacity: 1.0,
                 strokeWeight: 0.5
             });
@@ -82,7 +82,7 @@
                 path: [start, middle, end],
                 geodesic: false,
                 map: map,
-                strokeColor: color,
+                strokeColor: "#" + color,
                 strokeOpacity: 1.0,
                 strokeWeight: 0.5
             });
