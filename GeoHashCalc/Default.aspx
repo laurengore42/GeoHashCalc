@@ -58,6 +58,7 @@
             Return outStr.ToLower
         End Function
         
+        Private dateUsed As DateTime
         Private useString As String
         Private fullHash As String
         Private west As Boolean
@@ -89,7 +90,7 @@
             End If
             
             Dim dateUsedString = Request.QueryString("date")
-            Dim dateUsed As DateTime = Nothing
+            dateUsed = Nothing
             
             If Not dateUsedString = Nothing AndAlso Not dateUsedString = "" Then
                 DateTime.TryParse(Request.QueryString("date"), dateUsed)
@@ -186,6 +187,30 @@
             <h4>Showing markers for <span style="color:#<%=DrawMap.HashColor%>">today</span> and <span style="color:#<%=DrawMap.TomorrowColor%>">tomorrow</span></h4>
                 <% End If %>
             <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>), <span style="color:#<%=DrawMap.HomeColor%>;"><%If west Then%>west<%Else%>east<% End If%></span> of the -30W line</h4>
+            <% Dim dateBack = dateUsed.AddDays(-1)
+                Dim dbYear = dateBack.Year
+                Dim dbMonth = dateBack.Month.ToString
+                If dbMonth < 10 Then
+                    dbMonth = "0" + dbMonth
+                End If
+                Dim dbDay = dateBack.Day.ToString
+                If dbDay < 10 Then
+                    dbDay = "0" + dbDay
+                End If
+                %>
+            <h4>go <a href="/?lat=<%=Math.Round(Convert.ToDecimal(lat), 6)%>&lon=<%=Math.Round(Convert.ToDecimal(lon), 6)%>&date=<%=dbYear%>-<%=dbMonth%>-<%=dbDay%>">back</a> a day</h4>
+            <% Dim dateForward = dateUsed.AddDays(1)
+                Dim dfYear = dateForward.Year
+                Dim dfMonth = dateForward.Month.ToString
+                If dfMonth < 10 Then
+                    dfMonth = "0" + dfMonth
+                End If
+                Dim dfDay = dateForward.Day.ToString
+                If dfDay < 10 Then
+                    dfDay = "0" + dfDay
+                End If
+                %>
+            <h4>go <a href="/?lat=<%=Math.Round(Convert.ToDecimal(lat), 6)%>&lon=<%=Math.Round(Convert.ToDecimal(lon), 6)%>&date=<%=dfYear%>-<%=dfMonth%>-<%=dfDay%>">forward</a> a day</h4>
             <% End If%>
 
             <uc1:map ID="DrawMap" runat="server"></uc1:map>
