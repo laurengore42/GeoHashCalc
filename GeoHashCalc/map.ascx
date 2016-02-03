@@ -180,8 +180,8 @@
         var hashLon = 0<%=MarkLon%>;
         var hashLatTomorrow = 0<%=MarkLatTomorrow%>;
         var hashLonTomorrow = 0<%=MarkLonTomorrow%>;
-        var globalLat = 0<%=GlobalLat%>;
-        var globalLon = 0<%=GlobalLon%>;
+        var globalLat = <%=GlobalLat%>;
+        var globalLon = <%=GlobalLon%>;
 
         var homeColor = "<%=HomeColor%>";
         var globalColor = "<%=GlobalColor%>";
@@ -219,20 +219,31 @@
             origin: new google.maps.Point(0,0),
             anchor: new google.maps.Point(10, 34)
         };
-        latlng = new google.maps.LatLng((180*globalLat)-90, (360*globalLon)-180);
+        latlng = new google.maps.LatLng(globalLat, globalLon);
         drawMarker(latlng, map, pinImage);
         
+        var geocoder = new google.maps.Geocoder;
+        geocoder.geocode({'location': latlng}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK && results[1]) {
+                $('#globalHashLocation').text(results[1].formatted_address);
+            } else if (status === "ZERO_RESULTS") {
+                $('#globalHashLocation').text("Could not geocode - probably in the sea.");
+            }
+        });
+        
         // regular hashes
+        var markerCount = 6;
+
+        // today
         pinImage = {
             url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + hashColor,
             size: new google.maps.Size(21, 34),
             origin: new google.maps.Point(0,0),
             anchor: new google.maps.Point(10, 34)
         };
-        var markerCount = 6;
         drawSetOfMarkers(intStartLat, intStartLon, hashLat, hashLon, markerCount, map, pinImage);
 
-            // tomorrow's hashes
+        // tomorrow
         if (hashLatTomorrow != 0 || hashLonTomorrow != 0) {
             pinImage = {
                 url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + tomorrowColor,

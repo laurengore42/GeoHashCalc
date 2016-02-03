@@ -67,8 +67,6 @@
         Private hash2 As String
         Private inthash1 As String
         Private inthash2 As String
-        Private globalinthash1 As String
-        Private globalinthash2 As String
         Private destLat As String
         Private destLon As String
         
@@ -132,6 +130,9 @@
             destLat = lat.Substring(0, lat.IndexOf(".")) + inthash1
             destLon = lon.Substring(0, lon.IndexOf(".")) + inthash2
             
+            Dim globalinthash1 = ""
+            Dim globalinthash2 = ""
+            
             If (useString = westStartString) Then
                 ' West
                 
@@ -140,8 +141,8 @@
                 Dim globalhash1 = globalfullHash.Substring(0, 16)
                 Dim globalhash2 = globalfullHash.Substring(16)
                 globalinthash1 = (Convert.ToUInt64(globalhash1, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
-                globalinthash2 = (Convert.ToUInt64(globalhash2, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
                 globalinthash1 = "." + Math.Round(Convert.ToDouble(globalinthash1) * Math.Pow(10, desiredLength)).ToString
+                globalinthash2 = (Convert.ToUInt64(globalhash2, 16) / Convert.ToUInt64(maxhash, 16)).ToString.Substring(1)
                 globalinthash2 = "." + Math.Round(Convert.ToDouble(globalinthash2) * Math.Pow(10, desiredLength)).ToString
             Else
                 ' East
@@ -167,8 +168,8 @@
             DrawMap.QueryLon = lon
             DrawMap.MarkLat = destLat.Substring(destLat.IndexOf("."))
             DrawMap.MarkLon = destLon.Substring(destLon.IndexOf("."))
-            DrawMap.GlobalLat = globalinthash1
-            DrawMap.GlobalLon = globalinthash2
+            DrawMap.GlobalLat = Math.Round((Convert.ToDecimal("0" + globalinthash1) * 180) - 90, 7)
+            DrawMap.GlobalLon = Math.Round((Convert.ToDecimal("0" + globalinthash2) * 360) - 180, 7)
         End Sub
     </script>
 
@@ -186,16 +187,16 @@
 
             <% If useString IsNot Nothing Then%>
             <br />
-            <p><i>
-                    Starting string: <%= useString%><br />
-                    MD5 hash: <%= fullHash%><br />
-                    In halves: <%= hash1%>, <%= hash2%><br />
-                    In decimal: <%= inthash1%>, <%= inthash2%><br />
-                    Check: <a href="http://wiki.xkcd.com/geohashing/<%=useString.Substring(0, 10)%>" target="_blank"><%=useString.Substring(0, 10)%></a><br />
-                    Go: <%= destLat%>, <%=destLon%><br />
-                    Check: <a href="http://wiki.xkcd.com/geohashing/<%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%>" target="_blank"><%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%></a><br />
+            <p><i>Starting string: <%= useString%><br />
+                MD5 hash: <%= fullHash%><br />
+                In halves: <%= hash1%>, <%= hash2%><br />
+                In decimal: <%= inthash1%>, <%= inthash2%><br />
+                Check: <a href="http://wiki.xkcd.com/geohashing/<%=useString.Substring(0, 10)%>" target="_blank"><%=useString.Substring(0, 10)%></a><br />
+                Go: <%= destLat%>, <%=destLon%><br />
+                Check: <a href="http://wiki.xkcd.com/geohashing/<%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%>" target="_blank"><%=lat.Substring(0, lat.IndexOf("."))%>,<%=lon.Substring(0, lon.IndexOf("."))%></a><br />
                 <br />
-                    Globalhash: <%= Math.Round((Convert.ToDecimal("0" + globalinthash1) * 180) - 90, 7)%>, <%= Math.Round((Convert.ToDecimal("0" + globalinthash2) * 360) - 180, 7)%>
+                Globalhash: <a href="http://maps.google.co.uk/maps?q=<%=DrawMap.GlobalLat%>,<%=DrawMap.GlobalLon%>" target="_blank">(<%=DrawMap.GlobalLat%>, <%=DrawMap.GlobalLon%>)</a><br />
+                <span id="globalHashLocation" />
             </i></p>
             <% End If%>
         </div>
