@@ -188,16 +188,18 @@
     <div class="row">
         <div class="col">
             <h2>hello world</h2>
-            <% If useString IsNot Nothing Then%>
+            <% If useString IsNot Nothing Then
+                    Dim dayOfWeek = dateUsed.ToString("dddd", New System.Globalization.CultureInfo("en-gb"))
+                    %>
             <h4>Showing markers for <a href="http://wiki.xkcd.com/geohashing/<%=dateUsedString%>" target="_blank">
                 <% If dateUsed.Date = DateTime.Now.Date %>
-            <span style="color:#<%=DrawMap.HashColor%>">today</span></a> (<%= WeekdayName(dateUsed.DayOfWeek)%>)
+            <span style="color:#<%=DrawMap.HashColor%>">today</span></a> (<%=dayOfWeek%>)
             <%If Not String.IsNullOrEmpty(DrawMap.MarkLatTomorrow) Then%> and <span style="color:#<%=DrawMap.TomorrowColor%>">tomorrow</span>
             <% End If %></h4>
             <% ElseIf dateUsed.Date = DateTime.Now.Date.AddDays(1) Then%>
-            <span style="color:#<%=DrawMap.HashColor%>">tomorrow</span></a> (<%=WeekdayName(dateUsed.DayOfWeek)%>)
+            <span style="color:#<%=DrawMap.HashColor%>">tomorrow</span></a> (<%=dayOfWeek%>)
             <% Else %>
-            <span style="color:#<%=DrawMap.HashColor%>"><%=dateUsedString%></span></a> (<%=WeekdayName(dateUsed.DayOfWeek)%>)
+            <span style="color:#<%=DrawMap.HashColor%>"><%=dateUsedString%></span></a> (<%=dayOfWeek%>)
                 <% End If %>
             </h4>
             <h4>you are at (<%=Math.Round(Convert.ToDecimal(lat), 6)%>, <%=Math.Round(Convert.ToDecimal(lon), 6)%>), <span style="color:#<%=DrawMap.HomeColor%>;"><%If west Then%>west<%Else%>east<% End If%></span> of the -30W line</h4>
