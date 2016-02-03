@@ -103,71 +103,7 @@
         });
     }
 
-    function initialize(lat, lon) {
-        var latlng = new google.maps.LatLng(lat, lon);
-        var mapOptions = {
-            zoom: 7,
-            center: latlng
-        };
-        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-        <% If QueryLat.Length > 0 AndAlso QueryLon.Length > 0 Then %>
-        var intStartLat = <%=QueryLat.Substring(0,QueryLat.IndexOf("."))%>;
-        var intStartLon = <%=QueryLon.Substring(0,QueryLon.IndexOf("."))%>;
-        var hashLat = 0<%=MarkLat%>;
-        var hashLon = 0<%=MarkLon%>;
-        var hashLatTomorrow = 0<%=MarkLatTomorrow%>;
-        var hashLonTomorrow = 0<%=MarkLonTomorrow%>;
-        var globalLat = 0<%=GlobalLat%>;
-        var globalLon = 0<%=GlobalLon%>;
-
-        var homeColor = "<%=HomeColor%>";
-        var globalColor = "<%=GlobalColor%>";
-        var hashColor = "<%=HashColor%>";
-        var tomorrowColor = "<%=TomorrowColor%>";
-        var lineColor = "<%=LineColor%>";
-
-        // lines
-        for (i=-180;i<180;i++) {
-            drawLine(i,map,lineColor,true);
-        }
-        for (i=-90;i<90;i++) {
-            drawLine(i,map,lineColor,false);
-        }
-        
-        // home location
-        var pinImage;
-        pinImage = {
-            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + homeColor,
-            size: new google.maps.Size(21, 34),
-            origin: new google.maps.Point(0,0),
-            anchor: new google.maps.Point(10, 34)
-        };
-        var homeMarker = new google.maps.Marker({
-            position: new google.maps.LatLng(<%=Querylat%>, <%=Querylon%>),
-            map: map,
-            icon: pinImage
-        });
-        
-        // globalhash
-        var latlng;
-        pinImage = {
-            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + globalColor,
-            size: new google.maps.Size(21, 34),
-            origin: new google.maps.Point(0,0),
-            anchor: new google.maps.Point(10, 34)
-        };
-        latlng = new google.maps.LatLng((180*globalLat)-90, (360*globalLon)-180);
-        drawMarker(latlng, map, pinImage);
-        
-        // regular hashes in red
-        pinImage = {
-            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + hashColor,
-            size: new google.maps.Size(21, 34),
-            origin: new google.maps.Point(0,0),
-            anchor: new google.maps.Point(10, 34)
-        };
-        var markerCount = 6;
+    function drawSetOfMarkers(intStartLat, intStartLon, hashLat, hashLon, markerCount, map, pinImage) {
         for (i=1-markerCount; i<markerCount; i++) {
             var newLat = intStartLat + i;
             for (j=1-markerCount; j<markerCount; j++) {
@@ -226,76 +162,85 @@
                     }
                 }
             }
-            
-            // tomorrow's hashes in yellow
-            if (hashLatTomorrow != 0 || hashLonTomorrow != 0) {
-                var pinImageTomorrow = {
-                    url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + tomorrowColor,
-                    size: new google.maps.Size(21, 34),
-                    origin: new google.maps.Point(0,0),
-                    anchor: new google.maps.Point(10, 34)
-                };
-                var markerCount = 6;
-                for (k=1-markerCount; k<markerCount; k++) {
-                    var newLat = intStartLat + k;
-                    for (l=1-markerCount; l<markerCount; l++) {
-                        var newLon = intStartLon + l;
-                        if (newLat > 0) {
-                            if (newLon > 0) {
-                                latlng = new google.maps.LatLng(newLat + hashLatTomorrow, newLon + hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                            } else if (newLon < 0) {
-                                latlng = new google.maps.LatLng(newLat + hashLatTomorrow, newLon - hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                            } else {
-                                // longitude zero
-                                latlng = new google.maps.LatLng(newLat + hashLatTomorrow, 0 - hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                                latlng = new google.maps.LatLng(newLat + hashLatTomorrow, 0 + hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                            }
-                        } else if (newLat < 0) {
-                            if (newLon > 0) {
-                                latlng = new google.maps.LatLng(newLat - hashLatTomorrow, newLon + hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                            } else if (newLon < 0) {
-                                latlng = new google.maps.LatLng(newLat - hashLatTomorrow, newLon - hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                            } else {
-                                // longitude zero
-                                latlng = new google.maps.LatLng(newLat - hashLatTomorrow, 0 - hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                                latlng = new google.maps.LatLng(newLat - hashLatTomorrow, 0 + hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                            }
-                        } else {
-                            if (newLon > 0) {
-                                // latitude zero
-                                latlng = new google.maps.LatLng(0 + hashLatTomorrow, newLon + hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                                latlng = new google.maps.LatLng(0 - hashLatTomorrow, newLon + hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                            } else if (newLon < 0) {
-                                // latitude zero
-                                latlng = new google.maps.LatLng(0 + hashLatTomorrow, newLon - hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                                latlng = new google.maps.LatLng(0 - hashLatTomorrow, newLon - hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                            } else {
-                                // both zeroes
-                                latlng = new google.maps.LatLng(0 + hashLatTomorrow, 0 + hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                                latlng = new google.maps.LatLng(0 + hashLatTomorrow, 0 - hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                                latlng = new google.maps.LatLng(0 - hashLatTomorrow, 0 + hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                                latlng = new google.maps.LatLng(0 - hashLatTomorrow, 0 - hashLonTomorrow);
-                                drawMarker(latlng, map, pinImageTomorrow);
-                            }
-                        }
-                    }
-                }
-            }
+        }
+    }
+
+    function initialize(lat, lon) {
+        var latlng = new google.maps.LatLng(lat, lon);
+        var mapOptions = {
+            zoom: 7,
+            center: latlng
+        };
+        map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+        <% If QueryLat.Length > 0 AndAlso QueryLon.Length > 0 Then %>
+        var intStartLat = <%=QueryLat.Substring(0,QueryLat.IndexOf("."))%>;
+        var intStartLon = <%=QueryLon.Substring(0,QueryLon.IndexOf("."))%>;
+        var hashLat = 0<%=MarkLat%>;
+        var hashLon = 0<%=MarkLon%>;
+        var hashLatTomorrow = 0<%=MarkLatTomorrow%>;
+        var hashLonTomorrow = 0<%=MarkLonTomorrow%>;
+        var globalLat = 0<%=GlobalLat%>;
+        var globalLon = 0<%=GlobalLon%>;
+
+        var homeColor = "<%=HomeColor%>";
+        var globalColor = "<%=GlobalColor%>";
+        var hashColor = "<%=HashColor%>";
+        var tomorrowColor = "<%=TomorrowColor%>";
+        var lineColor = "<%=LineColor%>";
+
+        // lines
+        for (i=-180;i<180;i++) {
+            drawLine(i,map,lineColor,true);
+        }
+        for (i=-90;i<90;i++) {
+            drawLine(i,map,lineColor,false);
+        }
+        
+        // home location
+        var pinImage;
+        pinImage = {
+            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + homeColor,
+            size: new google.maps.Size(21, 34),
+            origin: new google.maps.Point(0,0),
+            anchor: new google.maps.Point(10, 34)
+        };
+        var homeMarker = new google.maps.Marker({
+            position: new google.maps.LatLng(<%=Querylat%>, <%=Querylon%>),
+            map: map,
+            icon: pinImage
+        });
+        
+        // globalhash
+        var latlng;
+        pinImage = {
+            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + globalColor,
+            size: new google.maps.Size(21, 34),
+            origin: new google.maps.Point(0,0),
+            anchor: new google.maps.Point(10, 34)
+        };
+        latlng = new google.maps.LatLng((180*globalLat)-90, (360*globalLon)-180);
+        drawMarker(latlng, map, pinImage);
+        
+        // regular hashes
+        pinImage = {
+            url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + hashColor,
+            size: new google.maps.Size(21, 34),
+            origin: new google.maps.Point(0,0),
+            anchor: new google.maps.Point(10, 34)
+        };
+        var markerCount = 6;
+        drawSetOfMarkers(intStartLat, intStartLon, hashLat, hashLon, markerCount, map, pinImage);
+
+            // tomorrow's hashes
+        if (hashLatTomorrow != 0 || hashLonTomorrow != 0) {
+            pinImage = {
+                url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + tomorrowColor,
+                size: new google.maps.Size(21, 34),
+                origin: new google.maps.Point(0,0),
+                anchor: new google.maps.Point(10, 34)
+            };
+            drawSetOfMarkers(intStartLat, intStartLon, hashLatTomorrow, hashLonTomorrow, markerCount, map, pinImage);
         }
     <% End If %>
     }
