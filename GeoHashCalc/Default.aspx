@@ -227,6 +227,7 @@
             <h4>go <a href="/?lat=<%=Math.Round(Convert.ToDecimal(lat), 6)%>&lon=<%=Math.Round(Convert.ToDecimal(lon), 6)%>&date=<%=dfYear%>-<%=dfMonth%>-<%=dfDay%>">forward</a> a day</h4>
             <% End If%>
 
+            <%-- This has to be displayed even if no lat and long were provided; the geolocation code is in map.ascx --%>
             <uc1:map ID="DrawMap" runat="server"></uc1:map>
 
             <% If useString IsNot Nothing Then%>
