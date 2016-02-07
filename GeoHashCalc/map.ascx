@@ -8,6 +8,10 @@
     Public Property MarkLon As String = ""
     Public Property MarkLatTomorrow As String = ""
     Public Property MarkLonTomorrow As String = ""
+    Public Property MarkLatDay3 As String = ""
+    Public Property MarkLonDay3 As String = ""
+    Public Property MarkLatDay4 As String = ""
+    Public Property MarkLonDay4 As String = ""
     
     Public Property GlobalLat As String = ""
     Public Property GlobalLon As String = ""
@@ -16,6 +20,8 @@
     Public Property HashColor As String = "CD5C5C" ' indianred
     Public Property GlobalColor As String = "FFFFFF" ' white
     Public Property TomorrowColor As String = "FFD700" ' gold
+    Public Property Day3Color As String = "FFB6C1" ' lightpink
+    Public Property Day4Color As String = "A9A9A9" ' darkgray
     Public Property LineColor As String = "FF00FF" ' fuchsia
     
 </script>
@@ -180,6 +186,10 @@
         var hashLon = 0<%=MarkLon%>;
         var hashLatTomorrow = 0<%=MarkLatTomorrow%>;
         var hashLonTomorrow = 0<%=MarkLonTomorrow%>;
+        var hashLatDay3 = 0<%=MarkLatDay3%>;
+        var hashLonDay3 = 0<%=MarkLonDay3%>;
+        var hashLatDay4 = 0<%=MarkLatDay4%>;
+        var hashLonDay4 = 0<%=MarkLonDay4%>;
         var globalLat = <%=GlobalLat%>;
         var globalLon = <%=GlobalLon%>;
 
@@ -187,6 +197,8 @@
         var globalColor = "<%=GlobalColor%>";
         var hashColor = "<%=HashColor%>";
         var tomorrowColor = "<%=TomorrowColor%>";
+        var day3Color = "<%=Day3Color%>";
+        var day4Color = "<%=Day4Color%>";
         var lineColor = "<%=LineColor%>";
 
         // lines
@@ -252,6 +264,28 @@
                 anchor: new google.maps.Point(10, 34)
             };
             drawSetOfMarkers(intStartLat, intStartLon, hashLatTomorrow, hashLonTomorrow, markerCount, map, pinImage);
+        }
+
+        // day 3
+        if (hashLatDay3 != 0 || hashLonDay3 != 0) {
+            pinImage = {
+                url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + day3Color,
+                size: new google.maps.Size(21, 34),
+                origin: new google.maps.Point(0,0),
+                anchor: new google.maps.Point(10, 34)
+            };
+            drawSetOfMarkers(intStartLat, intStartLon, hashLatDay3, hashLonDay3, markerCount, map, pinImage);
+        }
+
+        // day 4
+        if (hashLatDay4 != 0 || hashLonDay4 != 0) {
+            pinImage = {
+                url: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|" + day4Color,
+                size: new google.maps.Size(21, 34),
+                origin: new google.maps.Point(0,0),
+                anchor: new google.maps.Point(10, 34)
+            };
+            drawSetOfMarkers(intStartLat, intStartLon, hashLatDay4, hashLonDay4, markerCount, map, pinImage);
         }
     <% End If %>
     }
