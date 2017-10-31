@@ -52,8 +52,17 @@
         location.replace(locationString);
     }
 
-    function locateFail() {
-        alert("Don't know where you are - sorry.");
+	function locateFail() {
+		var whereLat = 51.507351;
+		var whereLon = -0.127758;
+
+		var locationString = location.origin + "?lat=" + whereLat + "&lon=" + whereLon;
+        <% If Page.Request.QueryString("date") IsNot Nothing AndAlso Page.Request.QueryString("date") IsNot "" Then%>
+		locationString += "&date=" + "<%=Page.Request.QueryString("date")%>";
+        <% End If%>
+		alert("Don't know where you are - sorry. Using default location of London, UK.");
+
+		location.replace(locationString);
     }
 
     function drawLine(location, map, color, isLongitude) {
