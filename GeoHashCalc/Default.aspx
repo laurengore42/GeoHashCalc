@@ -246,7 +246,7 @@
     <%=""%>
     <div class="row">
         <div class="col">
-            <h2>hello world</h2>
+            <h2>XKCD geohash map</h2>
             <% If useString IsNot Nothing Then
                     Dim dayOfWeek = dateUsed.ToString("dddd", New System.Globalization.CultureInfo("en-us"))
                     %>
