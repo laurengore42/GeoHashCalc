@@ -4,3 +4,4 @@ _ReSharper.*
 *.cache
 /GeoHashCalc/bin
 /GeoHashCalc/obj
+.vs/GeoHashCalc/v15/
